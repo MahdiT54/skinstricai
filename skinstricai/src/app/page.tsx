@@ -1,23 +1,15 @@
 import Link from 'next/link';
-import Button from './components/Button';
+// import Button from './components/Button';
 
 export default function Home() {
   return (
-    <div className="relative flex items-center justify-center min-h-screen bg-white text-black">
-      {/* Top Navigation */}
-      <div className="absolute top-4 left-4 flex items-center space-x-2 text-sm font-medium">
-        <span className="font-bold">SKINSTRIC</span>
-        <span className="text-gray-500">[ INTRO ]</span>
-      </div>
-      <button className="absolute top-4 right-4 px-4 py-2 text-sm font-semibold bg-black text-white rounded hover:opacity-80">
-        ENTER CODE
-      </button>
+    <div className="relative flex items-center justify-center min-h-screen">
       
       {/* Centered Text */}
       <div className="text-center">
-        <h1 className="text-5xl font-semibold leading-tight">
-          <span className="border-b-2 border-blue-500">Sophisticated</span> <br />
-          <span className="border-b-2 border-blue-500">skincare</span>
+        <h1 className="text-5xl font-semibold leading-[.945]">
+          <span className="text-[86px] font-normal tracking-[-.07em]">Sophisticated</span> <br />
+          <span className="text-[86px] font-normal tracking-[-.07em]">skincare</span>
         </h1>
       </div>
       
