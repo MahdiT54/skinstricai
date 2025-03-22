@@ -1,37 +1,18 @@
-import Link from 'next/link';
+// import Link from 'next/link';
 // import Button from './components/Button';
 
 export default function Home() {
   return (
-    <div className="relative flex items-center justify-center min-h-screen">
-      
-      {/* Centered Text */}
-      <div className="text-center">
-        <h1 className="text-5xl font-semibold leading-[.945]">
-          <span className="text-[86px] font-normal tracking-[-.07em]">Sophisticated</span> <br />
-          <span className="text-[86px] font-normal tracking-[-.07em]">skincare</span>
+    <div className='relative h-full flex flex-1 flex-col'>
+      <div className='contents'> {/* page wrapper */}
+        <h1 className='m-auto text-center'> {/* title coontainer */}
+          <span>Sophisticated</span>
+          <span>skincare</span>
         </h1>
+        <p>Skinstric developed an A.I. that creates a highly-personalised routine tailored to what your skin needs</p> {/* subtitle container */}
       </div>
-      
-      {/* Side Navigation */}
-      <div className="absolute left-4 bottom-4 flex flex-col items-start">
-        <Link href="#" className="flex items-center space-x-2 text-sm font-medium hover:underline">
-          <span className="border border-black rounded-full p-1">⬦</span>
-          <span>DISCOVER A.I.</span>
-        </Link>
-      </div>
-      
-      <div className="absolute right-4 bottom-4 flex flex-col items-end">
-        <Link href="#" className="flex items-center space-x-2 text-sm font-medium hover:underline">
-          <span>TAKE TEST</span>
-          <span className="border border-black rounded-full p-1">➡</span>
-        </Link>
-      </div>
-      
-      {/* Footer Text */}
-      <div className="absolute bottom-4 left-4 text-xs text-gray-500 max-w-xs">
-        SKINSTRIC DEVELOPED AN A.I. THAT CREATES A HIGHLY-PERSONALISED ROUTINE TAILORED TO WHAT YOUR SKIN NEEDS.
-      </div>
+      <div className='absolute top-1/2 left-0'>Discover A.I.</div> {/* left-surv */}
+      <div className='absolute top-1/2 right-0'>Take Test</div> {/* right-surv */}
     </div>
   );
 }
