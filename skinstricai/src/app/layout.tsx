@@ -6,7 +6,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className="custom__font">
         <Navbar />
-        <main className="h-screen px-8 pb-8 flex flex-1 flex-col">
+        <main className="h-screen px-8 pb-8 flex flex-auto flex-col">
           {children}
         </main>
       </body>
