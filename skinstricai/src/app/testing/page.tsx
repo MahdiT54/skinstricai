@@ -2,9 +2,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-// import { useState } from 'react';
+// import { useRouter } from 'next/navigation';
+
 
 export default function Page() {
+
     return (
         <div className='relative h-full flex flex-col flex-1 pt-16'>
             <div className="font-semibold text-base leading-6 tracking-tight uppercase">To start analysis</div>
@@ -22,6 +24,7 @@ export default function Page() {
                 <Image src="/buttin-icon-shrunk.svg" alt="back btn" width={44} height={44}/>
                 Back
             </Link>
+            
         </div>
     );
 }
