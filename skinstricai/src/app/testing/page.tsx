@@ -52,14 +52,14 @@ export default function Page() {
     return (
         <div className='relative h-full flex flex-col flex-1 pt-16'>
         <div className="font-semibold text-base leading-6 tracking-tight uppercase">
-            {step === 1 ? 'To start analysis' : 'Where are you from?'}
+            To start analysis
         </div>
 
         <Image className='m-auto' src="/rombuses.svg" alt="rombus" width={500} height={500} />
 
         <div className="max-w-[360px] flex flex-col items-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/4">
             <label htmlFor="input" className='font-normal text-sm leading-6 uppercase text-gray-500'>
-                {step === 1 ? 'Click to type' : 'Enter location'}
+                {step === 1 ? 'Click to type' : 'Where are you from?'}
             </label>
             <input
                 type="text"
