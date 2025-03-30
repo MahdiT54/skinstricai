@@ -51,52 +51,57 @@ export default function Page() {
 
     return (
         <div className='relative h-full flex flex-col flex-1 pt-16'>
-        <div className="font-semibold text-base leading-6 tracking-tight uppercase">
-            To start analysis
+            <div className="font-semibold text-base leading-6 tracking-tight uppercase">
+                To start analysis
+            </div>
+
+            <Image className='m-auto' src="/rombuses.svg" alt="rombus" width={500} height={500} />
+
+            <div className="max-w-[360px] flex flex-col items-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/4">
+                <label htmlFor="input" className='font-normal text-sm leading-6 uppercase text-gray-500'>
+                    {step === 1 ? 'Click to type' : 'Where are you from?'}
+                </label>
+                <input
+                    type="text"
+                    id="input"
+                    placeholder={step === 1 ? "Introduce Yourself" : "Your Location"}
+                    value={step === 1 ? name : location}
+                    onChange={(e) => step === 1 ? setName(e.target.value) : setLocation(e.target.value)}
+                    className=" outline-none w-full border-b border-black text-5xl leading-tight tracking-tighter text-center"
+                />
+            </div>
+            <div className='flex justify-between'>
+
+                {/* Proceed button */}
+
+
+                {/* Back button */}
+                {step === 1 ? (
+                    <Link href='/' className='flex items-center gap-4 font-semibold text-sm leading-4 tracking-tight uppercase ml-4 mt-4'>
+                        <Image src="/buttin-icon-shrunk.svg" alt="back btn" width={44} height={44} />
+                        Back
+                    </Link>
+                ) : (
+                    <button
+                        onClick={() => setStep(1)}
+                        className='flex items-center gap-4 font-semibold text-sm leading-4 tracking-tight uppercase ml-4 mt-4'
+                    >
+                        <Image src="/buttin-icon-shrunk.svg" alt="back btn" width={44} height={44} />
+                        Back
+                    </button>
+                )}
+                {showProceed && (
+                    <button
+                        onClick={handleProceed}
+                        className="flex items-center gap-4 font-semibold text-sm leading-4 tracking-tight uppercase ml-4 mt-4"
+                    >
+                        Proceed
+                        <Image src="/buttin-icon-proceed.svg" alt="back btn" width={44} height={44} />
+                    </button>
+                )}
+            </div>
+
         </div>
-
-        <Image className='m-auto' src="/rombuses.svg" alt="rombus" width={500} height={500} />
-
-        <div className="max-w-[360px] flex flex-col items-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/4">
-            <label htmlFor="input" className='font-normal text-sm leading-6 uppercase text-gray-500'>
-                {step === 1 ? 'Click to type' : 'Where are you from?'}
-            </label>
-            <input
-                type="text"
-                id="input"
-                placeholder={step === 1 ? "Introduce Yourself" : "Your Location"}
-                value={step === 1 ? name : location}
-                onChange={(e) => step === 1 ? setName(e.target.value) : setLocation(e.target.value)}
-                className="w-full border-b border-black text-5xl leading-tight tracking-tighter text-center"
-            />
-        </div>
-
-        {/* Proceed button */}
-        {showProceed && (
-            <button
-                onClick={handleProceed}
-                className="absolute bottom-6 right-6 px-4 py-2 bg-black text-white font-semibold rounded-xl text-sm uppercase shadow-lg"
-            >
-                Proceed
-            </button>
-        )}
-
-        {/* Back button */}
-        {step === 1 ? (
-            <Link href='/' className='flex items-center gap-4 font-semibold text-sm leading-4 tracking-tight uppercase ml-4 mt-4'>
-                <Image src="/buttin-icon-shrunk.svg" alt="back btn" width={44} height={44} />
-                Back
-            </Link>
-        ) : (
-            <button
-                onClick={() => setStep(1)}
-                className='flex items-center gap-4 font-semibold text-sm leading-4 tracking-tight uppercase ml-4 mt-4'
-            >
-                <Image src="/buttin-icon-shrunk.svg" alt="back btn" width={44} height={44} />
-                Back
-            </button>
-        )}
-    </div>
         // <div className='relative h-full flex flex-col flex-1 pt-16'>
         //     <div className="font-semibold text-base leading-6 tracking-tight uppercase">To start analysis</div>
         //     <Image className='m-auto' src="/rombuses.svg" alt="rombus" width={500} height={500} />
