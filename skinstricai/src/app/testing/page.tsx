@@ -42,7 +42,7 @@ export default function Page() {
                 const data = await res.json();
                 console.log('Success:', data);
 
-                router.push('/');
+                router.push('/aiscan');
             } catch (error) {
                 console.error('API Error:', error);
             }
