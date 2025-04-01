@@ -42,7 +42,7 @@ export default function Page() {
                 const data = await res.json();
                 console.log('Success:', data);
 
-                router.push('/next-step');
+                router.push('/');
             } catch (error) {
                 console.error('API Error:', error);
             }
