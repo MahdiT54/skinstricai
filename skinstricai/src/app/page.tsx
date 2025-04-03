@@ -14,8 +14,9 @@ export default function Home() {
       </div>
       <div className='uppercase flex items-center gap-4 absolute top-1/2 left-0'>
         <Image src="/buttin-icon-shrunk.svg" alt="back btn" width={44} height={44} />
-        Discover A.I.</div> {/* left-surv */}
-      <Link href='/testing' className='uppercase flex items-center gap-4 absolute top-1/2 right-0'>
+        Discover A.I.
+      </div> {/* left-surv */}
+      <Link href='/testing?step=1' className='uppercase flex items-center gap-4 absolute top-1/2 right-0'>
         Take Test {/* right-surv */}
         <Image src="/buttin-icon-proceed.svg" alt="back btn" width={44} height={44} />
       </Link>

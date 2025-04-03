@@ -1,14 +1,15 @@
 'use client'
 import Image from 'next/image';
-import React, { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import React from 'react';
 
 export default function Page() {
-    const [step, setStep] = useState(2);
+    // const searchParams = useSearchParams();
+    // const step = parseInt(searchParams.get('step') || '2');
+    const router = useRouter();
 
     const handleBack = () => {
-        if (step > 1) {
-            setStep(step - 1);
-        }
+        router.push('/testing?step=2');
     }
 
 
@@ -25,6 +26,7 @@ export default function Page() {
                 <Image src={"/picform-middleicon.svg"} alt="middle icon" width={100} height={100} />
                 <span className='text-neutral-900 uppercase font-normal text-[12px] leading-[16px] tracking-[0%] text-center'>select preferred way</span>
             </div>
+
             <button
                 onClick={handleBack}
                 className='flex items-center gap-4 font-semibold text-sm leading-4 tracking-tight uppercase ml-4 mt-4'
