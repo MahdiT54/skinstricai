@@ -7,6 +7,7 @@ export default function Page() {
     const router = useRouter();
     const [showPopup, setShowPopup] = useState(false);
     const [cameraAllowed, setCameraAllowed] = useState(false);
+    const [loading, setLoading] = useState(false);
     const videoRef = useRef<HTMLVideoElement>(null);
 
     const handleBack = () => {
@@ -20,6 +21,7 @@ export default function Page() {
     const handleAllow = () => {
         setShowPopup(false);
         setCameraAllowed(true);
+        setLoading(true);
     };
 
     const handleDeny = () => {
@@ -30,7 +32,9 @@ export default function Page() {
     useEffect(() => {
         const setupCamera = async () => {
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'user' }, 
+                });
                 if (videoRef.current) {
                     videoRef.current.srcObject = stream;
                     videoRef.current.play();
@@ -38,6 +42,8 @@ export default function Page() {
                 }
             } catch (error) {
                 console.error('Failed to access camera:', error);
+            } finally {
+                setLoading(false); 
             }
         };
 
@@ -52,8 +58,8 @@ export default function Page() {
                 To start analysis
             </div>
             <div className='w-full flex m-auto justify-around'>
-                <Image className='transition-transform duration-300 ease-in-out transform hover:scale-90' src="/aiscan-left.svg" alt="screencast" width={400} height={400} onClick={handleLeftImageClick} />
-                <Image src="/aiscan-right.svg" alt="gallerycast" width={400} height={400} />
+                <Image className='transform duration-300 ease-in-out hover:scale-90' src="/aiscan-left.svg" alt="screencast" width={400} height={400} onClick={handleLeftImageClick} />
+                <Image className='transform duration-300 ease-in-out hover:scale-90' src="/aiscan-right.svg" alt="gallerycast" width={400} height={400} />
             </div>
             <div className='gap-3 flex flex-col items-center absolute top-2/3 left-1/2 -translate-x-1/2'>
                 <Image src="/picform-middleicon.svg" alt="middle icon" width={100} height={100} />
@@ -91,11 +97,18 @@ export default function Page() {
                     </div>
                 </div>
             )}
+
+            {loading && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50">
+                    <p className="text-white text-lg font-semibold">Setting up camera...</p>
+                </div>
+            )}
+
             {cameraAllowed && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-75">
                     <video
                         ref={videoRef}
-                        className="w-full h-full object-cover z-10 bg-red-500"
+                        className="w-full h-full object-cover z-10"
                         autoPlay
                         playsInline
                     />
