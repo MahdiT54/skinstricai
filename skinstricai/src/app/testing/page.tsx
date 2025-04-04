@@ -21,7 +21,7 @@ export default function Page() {
     useEffect(() => {
         const inputToValidate = step === 1 ? name : location;
         setIsValid(validateInput(inputToValidate));
-    }, [name, location, step]);
+    }, [name, location, step]); // in array of dependencies, we put the variables that we want to watch for changes
 
     const handleProceed = async () => {
         if (step === 1) {
