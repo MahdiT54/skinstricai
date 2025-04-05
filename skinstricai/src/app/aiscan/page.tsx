@@ -58,7 +58,7 @@ export default function Page() {
                 To start analysis
             </div>
             <div className='w-full flex m-auto justify-around'>
-                <Image className='transform duration-300 ease-in-out hover:scale-90' src="/aiscan-left.svg" alt="screencast" width={400} height={400} onClick={handleLeftImageClick} />
+                <Image className='hover:cursor-pointer transform duration-300 ease-in-out hover:scale-90' src="/aiscan-left.svg" alt="screencast" width={400} height={400} onClick={handleLeftImageClick} />
                 <Image className='transform duration-300 ease-in-out hover:scale-90' src="/aiscan-right.svg" alt="gallerycast" width={400} height={400} />
             </div>
             <div className='gap-3 flex flex-col items-center absolute top-2/3 left-1/2 -translate-x-1/2'>
@@ -83,13 +83,13 @@ export default function Page() {
                         <div className="flex border-t border-gray-700">
                             <button
                                 onClick={handleDeny}
-                                className="w-1/2 px-4 py-3 text-xs tracking-wide uppercase text-white hover:bg-neutral-800 border-r border-gray-700"
+                                className="w-1/2 px-4 py-3 text-xs tracking-wide uppercase text-white hover:cursor-pointer hover:bg-neutral-800 border-r border-gray-700"
                             >
                                 Deny
                             </button>
                             <button
                                 onClick={handleAllow}
-                                className="w-1/2 px-4 py-3 text-xs tracking-wide uppercase text-white hover:bg-neutral-800"
+                                className="w-1/2 px-4 py-3 text-xs tracking-wide uppercase text-white hover:cursor-pointer hover:bg-neutral-800"
                             >
                                 Allow
                             </button>
