@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
+import CameraOverlay from '../components/CameraOverlay';
 
 export default function Page() {
     const router = useRouter();
@@ -33,7 +34,7 @@ export default function Page() {
         const setupCamera = async () => {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({
-                    video: { facingMode: 'user' }, 
+                    video: { facingMode: 'user' },
                 });
                 if (videoRef.current) {
                     videoRef.current.srcObject = stream;
@@ -43,7 +44,7 @@ export default function Page() {
             } catch (error) {
                 console.error('Failed to access camera:', error);
             } finally {
-                setLoading(false); 
+                setLoading(false);
             }
         };
 
@@ -104,16 +105,7 @@ export default function Page() {
                 </div>
             )}
 
-            {cameraAllowed && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-75">
-                    <video
-                        ref={videoRef}
-                        className="w-full h-full object-cover z-10"
-                        autoPlay
-                        playsInline
-                    />
-                </div>
-            )}
+            {cameraAllowed && <CameraOverlay cameraAllowed={cameraAllowed} videoRef={videoRef} />}
         </div>
     )
 }
