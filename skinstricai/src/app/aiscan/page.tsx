@@ -19,6 +19,15 @@ export default function Page() {
         setShowPopup(true);
     };
 
+    const handleCloseCamera = () => {
+        setCameraAllowed(false);
+        if (videoRef.current && videoRef.current.srcObject) {
+            const stream = videoRef.current.srcObject as MediaStream;
+            stream.getTracks().forEach((track) => track.stop());
+            videoRef.current.srcObject = null; // Clear the video source
+        }
+    };
+
     const handleAllow = () => {
         setShowPopup(false);
         setCameraAllowed(true);
@@ -105,7 +114,7 @@ export default function Page() {
                 </div>
             )}
 
-            {cameraAllowed && <CameraOverlay cameraAllowed={cameraAllowed} videoRef={videoRef} />}
+            {cameraAllowed && <CameraOverlay cameraAllowed={cameraAllowed} videoRef={videoRef} onClose={handleCloseCamera}/>}
         </div>
     )
 }
