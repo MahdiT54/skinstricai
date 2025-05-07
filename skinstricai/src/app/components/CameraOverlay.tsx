@@ -20,7 +20,7 @@ const CameraOverlay: React.FC<CameraOverlayProps> = ({ cameraAllowed, videoRef, 
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
             const base64Image = canvas.toDataURL("image/jpeg").split(',')[1]; // strip the "data:image/jpeg;base64," prefix
 
-            // now send base64Image to your Level 2 API
+            // now send base64Image to the level 2 API
             fetch('https://us-centrall-api-skinstric-ai.cloudfunctions.net/skinstricPhaseTwo', {
                 method: 'POST',
                 headers: {
