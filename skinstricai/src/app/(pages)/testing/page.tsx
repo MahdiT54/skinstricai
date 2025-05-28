@@ -26,6 +26,11 @@ export default function Page() {
             setTimeout(() => {
                 router.push("/testing?step=2");
             }, 0);
+        } else {
+            localStorage.setItem('name', name);
+            localStorage.setItem('city', city);
+            console.log('Form submitted:', { name, city });
+            alert('form submitted successfully!')
         }
     }
 

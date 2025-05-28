@@ -17,7 +17,7 @@ export default function Home() {
         <Image src="/buttin-icon-shrunk.svg" alt="back btn" width={44} height={44} />
         Discover A.I.
       </Link> {/* left-surv */}
-      <Link href='/testing' className='uppercase flex items-center gap-4 absolute top-1/2 right-0'>
+      <Link href='/testing?step=1' className='uppercase flex items-center gap-4 absolute top-1/2 right-0'>
         Take Test {/* right-surv */}
         <Image src="/buttin-icon-proceed.svg" alt="back btn" width={44} height={44} />
       </Link>
