@@ -1,7 +1,47 @@
 'use client'
 import Image from 'next/image';
+import { use, useEffect, useRef, useState } from 'react';
 
 export default function Page() {
+    const [showPopup, setShowPopup] = useState(false);
+    const [cameraAllowed, setCameraAllowed] = useState(false);
+    const videoRef = useRef<HTMLVideoElement>(null);
+
+    // const handleLeftImage = () => {
+    //     setShowPopup(true);
+    // }
+
+    const handleAllow = async () => {
+        console.log("camera access allowed");
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            if (videoRef.current) {
+                videoRef.current.srcObject = stream;
+                videoRef.current.play();
+            }
+            setCameraAllowed(true);
+            setShowPopup(false);
+        } catch (error) {
+            console.error('Error accessing camera:', error);
+            alert('Unable to access camera. Please check your permissions.');
+        }
+    };
+
+    const handleDeny = () => {
+        setShowPopup(false);
+        console.log('Camera access denied');
+    };
+
+    const handleCloseCamera = () => {
+        setCameraAllowed(false);
+        if (videoRef.current && videoRef.current.srcObject) {
+            const stream = videoRef.current.srcObject as MediaStream;
+            stream.getTracks().forEach((track) => track.stop());
+            videoRef.current.srcObject = null; // Clear the video source
+            console.log('Camera stream stopped and cleared');
+        }
+    }
+
 
     return (
         <div className='relative h-full flex flex-col flex-1 pt-16'>
@@ -9,7 +49,7 @@ export default function Page() {
                 To start analysis
             </div>
             <div className='w-full flex m-auto justify-around'>
-                <Image className='hover:cursor-pointer transform duration-300 ease-in-out hover:scale-90' src="/aiscan-left.svg" alt="screencast" width={400} height={400} onClick={handleLeftImageClick} />
+                <Image className='hover:cursor-pointer transform duration-300 ease-in-out hover:scale-90' src="/aiscan-left.svg" alt="screencast" width={400} height={400} onClick={() => setShowPopup(true)} />
                 <Image className='transform duration-300 ease-in-out hover:scale-90' src="/aiscan-right.svg" alt="gallerycast" width={400} height={400} />
             </div>
             <div className='gap-3 flex flex-col items-center absolute top-2/3 left-1/2 -translate-x-1/2'>
@@ -17,14 +57,48 @@ export default function Page() {
                 <span className='text-neutral-900 uppercase font-normal text-[12px] leading-[16px] tracking-[0%] text-center'>select preferred way</span>
             </div>
 
-            <button
+            <button onClick={() => window.history.back()}
                 className='flex items-center gap-4 font-semibold text-sm leading-4 tracking-tight uppercase ml-4 mt-4'
             >
                 <Image src="/buttin-icon-shrunk.svg" alt="back btn" width={44} height={44} />
                 Back
             </button>
+            {showPopup && (
+                <div className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 w-80 h-32 inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                    <div className="bg-black text-white rounded-sm shadow-lg flex flex-col">
+                        <div className="px-6 py-6 text-sm font-semibold text-center border-b border-gray-700">
+                            ALLOW A.I. TO ACCESS YOUR CAMERA
+                        </div>
+                        <div className="flex border-t border-gray-700">
+                            <button
+                                onClick={handleDeny}
+                                className="w-1/2 px-4 py-3 text-xs tracking-wide uppercase text-white hover:cursor-pointer hover:bg-neutral-800 border-r border-gray-700"
+                            >
+                                Deny
+                            </button>
+                            <button
+                                onClick={handleAllow}
+                                className="w-1/2 px-4 py-3 text-xs tracking-wide uppercase text-white hover:cursor-pointer hover:bg-neutral-800"
+                            >
+                                Allow
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
-                {/* <div className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 w-80 h-32 inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            {cameraAllowed && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50">
+                    <video ref={videoRef} className="w-full h-full object-cover" />
+                    <button
+                        onClick={handleCloseCamera}
+                        className="absolute top-4 left-4 bg-white text-black px-4 py-2 rounded"
+                    >
+                        Close Camera
+                    </button>
+                </div>
+            )}
+            {/* <div className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 w-80 h-32 inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-black text-white rounded-sm shadow-lg flex flex-col">
                         <div className="px-6 py-6 text-sm font-semibold text-center border-b border-gray-700">
                             ALLOW A.I. TO ACCESS YOUR CAMERA
@@ -43,12 +117,12 @@ export default function Page() {
                         </div>
                     </div>
                 </div> */}
-                {/* pop up for allow camera ^^ */}
+            {/* pop up for allow camera ^^ */}
 
-                {/* <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50">
+            {/* <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50">
                     <p className="text-white text-lg font-semibold">Setting up camera...</p>
                 </div> */}
-{/* loading ^^ */}
+            {/* loading ^^ */}
         </div>
     )
 }

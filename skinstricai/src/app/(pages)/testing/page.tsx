@@ -31,7 +31,8 @@ export default function Page() {
             localStorage.setItem('name', name);
             localStorage.setItem('city', city);
             console.log('Form submitted:', { name, city });
-            alert('form submitted successfully!')
+            router.push('/aiscan');
+            // alert('form submitted successfully!')
         }
     }
 
@@ -54,28 +55,26 @@ export default function Page() {
 
 
             {showConfirmModal ? (
-                // <div className="w-80 h-32 inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                    <div className="w-80 h-32 bg-black text-white rounded-sm shadow-lg flex flex-col">
-                        <div className="px-6 py-6 text-sm text-left uppercase font-semibold text-center border-b border-gray-700">
+                <div className="w-80 h-32 bg-black text-white rounded-sm shadow-lg flex flex-col z-50">
+                    <div className="px-6 py-6 text-sm text-left uppercase font-semibold text-center border-b border-gray-700">
                         You are about to leave the analysis. <br />
                         Are you sure?
-                        </div>
-                        <div className="flex border-t border-gray-700">
-                            <button
-                                onClick={() => setShowConfirmModal(false)}
-                                className="w-1/2 px-4 py-3 text-xs tracking-wide uppercase text-white hover:cursor-pointer hover:bg-neutral-800 border-r border-gray-700"
-                            >
-                                Stay
-                            </button>
-                            <button
-                                onClick={confirmQuit}
-                                className="w-1/2 px-4 py-3 text-xs tracking-wide uppercase text-white hover:cursor-pointer hover:bg-neutral-800"
-                            >
-                                Leave
-                            </button>
-                        </div>
                     </div>
-                // </div>
+                    <div className="flex border-t border-gray-700">
+                        <button
+                            onClick={() => setShowConfirmModal(false)}
+                            className="w-1/2 px-4 py-3 text-xs tracking-wide uppercase text-white hover:cursor-pointer hover:bg-neutral-800 border-r border-gray-700"
+                        >
+                            Stay
+                        </button>
+                        <button
+                            onClick={confirmQuit}
+                            className="w-1/2 px-4 py-3 text-xs tracking-wide uppercase text-white hover:cursor-pointer hover:bg-neutral-800"
+                        >
+                            Leave
+                        </button>
+                    </div>
+                </div>
             ) : (
                 <div className="font-semibold text-base leading-6 tracking-tight uppercase">
                     To start analysis
