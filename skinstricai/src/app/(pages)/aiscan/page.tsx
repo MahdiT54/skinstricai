@@ -1,6 +1,7 @@
 'use client'
+import CameraOverlay from '@/app/components/cameracomps/CameraOverlay';
 import Image from 'next/image';
-import { use, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function Page() {
     const [showPopup, setShowPopup] = useState(false);
@@ -10,21 +11,12 @@ export default function Page() {
     // const handleLeftImage = () => {
     //     setShowPopup(true);
     // }
+    
 
-    const handleAllow = async () => {
-        console.log("camera access allowed");
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            if (videoRef.current) {
-                videoRef.current.srcObject = stream;
-                videoRef.current.play();
-            }
-            setCameraAllowed(true);
-            setShowPopup(false);
-        } catch (error) {
-            console.error('Error accessing camera:', error);
-            alert('Unable to access camera. Please check your permissions.');
-        }
+    const handleAllow = () => {
+        setShowPopup(false);
+        setCameraAllowed(true);
+        // setLoading(true);
     };
 
     const handleDeny = () => {
@@ -41,6 +33,30 @@ export default function Page() {
             console.log('Camera stream stopped and cleared');
         }
     }
+
+    useEffect(() => {
+        const setupCamera = async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'user' },
+                });
+                if (videoRef.current) {
+                    videoRef.current.srcObject = stream;
+                    videoRef.current.play();
+                    console.log('Camera stream set to video element');
+                }
+            } catch (error) {
+                console.error('Failed to access camera:', error);
+            } finally {
+                // setLoading(false);
+            }
+        };
+
+        if (cameraAllowed) {
+            setupCamera();
+        }
+    }, [cameraAllowed]);
+
 
 
     return (
@@ -87,17 +103,7 @@ export default function Page() {
                 </div>
             )}
 
-            {cameraAllowed && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50">
-                    <video ref={videoRef} className="w-full h-full object-cover" />
-                    <button
-                        onClick={handleCloseCamera}
-                        className="absolute top-4 left-4 bg-white text-black px-4 py-2 rounded"
-                    >
-                        Close Camera
-                    </button>
-                </div>
-            )}
+            {cameraAllowed && <CameraOverlay cameraAllowed={cameraAllowed} videoRef={videoRef} onClose={handleCloseCamera} />}
             {/* <div className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 w-80 h-32 inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-black text-white rounded-sm shadow-lg flex flex-col">
                         <div className="px-6 py-6 text-sm font-semibold text-center border-b border-gray-700">
