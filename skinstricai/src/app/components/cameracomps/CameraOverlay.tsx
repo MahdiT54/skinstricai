@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 
 interface CameraOverlayProps {
     cameraAllowed: boolean;
@@ -8,7 +8,33 @@ interface CameraOverlayProps {
 }
 
 const CameraOverlay: React.FC<CameraOverlayProps> = ({ cameraAllowed, videoRef, onClose }) => {
+    const [timer, setTimer] = useState<number | null>(null);
+    const [countdown, setCountdown] = useState<number | null>(null);
+
+    const handleTimerSelect = (value: number | null) => {
+        setTimer(value);
+        setCountdown(null);
+    }
+
     const handleCapture = async () => {
+        if (timer && timer > 0) {
+            setCountdown(timer);
+            const interval = setInterval(() => {
+                setCountdown((prev) => {
+                    if (prev === null || prev <= 1) {
+                        clearInterval(interval);
+                        captureImage();
+                        return null;
+                    }
+                    return prev - 1;
+                })
+            }, 1000); // countdown every second
+        } else {
+            captureImage();
+        }
+    }
+
+    const captureImage = async () => {
         const video = videoRef.current;
         if (!video) {
             alert("No video stream available.");
@@ -76,9 +102,9 @@ const CameraOverlay: React.FC<CameraOverlayProps> = ({ cameraAllowed, videoRef, 
 
             <button
                 onClick={onClose}
-                className='z-100 left-10 bottom-10 absolute flex items-center gap-4 font-semibold text-sm leading-4 tracking-tight uppercase ml-4 mt-4'
+                className='text-white z-100 left-10 bottom-10 absolute flex items-center gap-4 font-semibold text-sm leading-4 tracking-tight uppercase ml-4 mt-4'
             >
-                <Image src="/buttin-icon-shrunk.svg" alt="back btn" width={44} height={44} />
+                <Image src="/buttin-icon-shrunk-white.svg" alt="back btn" width={44} height={44} />
                 Back
             </button>
 
@@ -102,12 +128,33 @@ const CameraOverlay: React.FC<CameraOverlayProps> = ({ cameraAllowed, videoRef, 
 
             {/* Timer Selector (static UI for now) */}
             <div className="absolute left-10 z-20">
-                <div className="bg-gray-700 text-white rounded-full px-4 py-2 flex space-x-2">
-                    <button className="text-sm">OFF</button>
-                    <button className="text-sm">3S</button>
-                    <button className="text-sm">10S</button>
+                <div className="bg-gray-700 text-white rounded-full px-3 py-2 flex space-x-2">
+                    <button
+                        className={`text-sm ${timer === null ? 'bg-white text-black rounded-full p-1' : ''}`}
+                        onClick={() => handleTimerSelect(null)}
+                    >
+                        OFF
+                    </button>
+                    <button
+                        className={`text-sm ${timer === 3 ? 'bg-white text-black rounded-full p-1' : ''}`}
+                        onClick={() => handleTimerSelect(3)}
+                    >
+                        3S
+                    </button>
+                    <button
+                        className={`text-sm ${timer === 10 ? 'bg-white text-black rounded-full p-1' : ''}`}
+                        onClick={() => handleTimerSelect(10)}
+                    >
+                        10S
+                    </button>
                 </div>
             </div>
+
+            {countdown !== null && (
+                <div className="absolute top-10 text-white text-2xl z-50">
+                    {countdown}s
+                </div>
+            )}
 
             {/* Take Picture Button */}
             <div className='absolute flex items-center right-10 z-20'>
