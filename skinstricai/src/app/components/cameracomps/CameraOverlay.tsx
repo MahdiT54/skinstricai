@@ -11,7 +11,7 @@ const CameraOverlay: React.FC<CameraOverlayProps> = ({ cameraAllowed, videoRef, 
     const handleCapture = async () => {
         const video = videoRef.current;
         if (!video) {
-            alert("Video stream not available.");
+            alert("No video stream available.");
             return;
         }
 
@@ -21,22 +21,18 @@ const CameraOverlay: React.FC<CameraOverlayProps> = ({ cameraAllowed, videoRef, 
         const ctx = canvas.getContext("2d");
 
         if (!ctx) {
-            alert("Failed to get canvas context.");
+            alert("Canvas context unavailable.");
             return;
         }
 
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const dataUrl = canvas.toDataURL("image/jpeg");
-        console.log("Full Data URL:", dataUrl); // Log full data URL
+        const fullBase64Image = canvas.toDataURL("image/jpeg"); // keep the prefix
+        const base64Payload = fullBase64Image.replace(/^data:image\/jpeg;base64,/, ""); // Remove prefix
 
-        const base64Image = dataUrl.split(',')[1];
-        console.log("Base64 Image (first 100 chars):", base64Image?.substring(0, 100));
-
-        if (!base64Image || base64Image.length < 100) {
-            alert("Capture failed: Image is empty or too short.");
+        if (!base64Payload) {
+            alert("Failed to capture valid image.");
             return;
         }
-
 
         try {
             const response = await fetch('https://us-central1-api-skinstric-ai.cloudfunctions.net/skinstricPhaseTwo', {
@@ -44,20 +40,26 @@ const CameraOverlay: React.FC<CameraOverlayProps> = ({ cameraAllowed, videoRef, 
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ Image: base64Image }),
+                body: JSON.stringify({
+                    image: base64Payload // send with prefix
+                }),
             });
 
-            const result = await response.json();
-            console.log("AI Prediction Result:", result);
-
-            if (!result.success) {
-                alert(result.message || "Prediction failed.");
+            if (!response.ok) {
+                const errorData = await response.json();
+                alert(`API Error: ${errorData.message || "Unknown error occurred."}`);
+                return;
             }
+
+            const result = await response.json();
+            console.log("API Response:", result);
+
         } catch (error) {
-            console.error("API error:", error);
-            alert("Error sending image to the AI server.");
+            console.error("Network error:", error);
+            alert("Failed to send image to the server.");
         }
     };
+
 
 
 
