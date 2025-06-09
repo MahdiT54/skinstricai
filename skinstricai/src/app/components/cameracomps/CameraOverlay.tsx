@@ -8,34 +8,58 @@ interface CameraOverlayProps {
 }
 
 const CameraOverlay: React.FC<CameraOverlayProps> = ({ cameraAllowed, videoRef, onClose }) => {
-    const handleCapture = () => {
+    const handleCapture = async () => {
         const video = videoRef.current;
-        if (!video) return;
+        if (!video) {
+            alert("Video stream not available.");
+            return;
+        }
 
         const canvas = document.createElement("canvas");
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         const ctx = canvas.getContext("2d");
-        if (ctx) {
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            const base64Image = canvas.toDataURL("image/jpeg").split(',')[1]; // strip the "data:image/jpeg;base64," prefix
 
-            // now send base64Image to your Level 2 API
-            fetch('https://us-centrall-api-skinstric-ai.cloudfunctions.net/skinstricPhaseTwo', {
+        if (!ctx) {
+            alert("Failed to get canvas context.");
+            return;
+        }
+
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const dataUrl = canvas.toDataURL("image/jpeg");
+        console.log("Full Data URL:", dataUrl); // Log full data URL
+
+        const base64Image = dataUrl.split(',')[1];
+        console.log("Base64 Image (first 100 chars):", base64Image?.substring(0, 100));
+
+        if (!base64Image || base64Image.length < 100) {
+            alert("Capture failed: Image is empty or too short.");
+            return;
+        }
+
+
+        try {
+            const response = await fetch('https://us-central1-api-skinstric-ai.cloudfunctions.net/skinstricPhaseTwo', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ Image: base64Image }),
-            })
-                .then(res => res.json())
-                .then(data => {
-                    console.log("API Response:", data);
-                    // Navigate or update UI based on response
-                })
-                .catch(err => console.error("API Error:", err));
+            });
+
+            const result = await response.json();
+            console.log("AI Prediction Result:", result);
+
+            if (!result.success) {
+                alert(result.message || "Prediction failed.");
+            }
+        } catch (error) {
+            console.error("API error:", error);
+            alert("Error sending image to the AI server.");
         }
-    }
+    };
+
+
 
     if (!cameraAllowed) return null;
 
